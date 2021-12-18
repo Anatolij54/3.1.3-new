@@ -44,16 +44,27 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public Role saveRole(Role role){
+        return roleRepository.save(role);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     public User getUserById(Long id){
-        return userRepository.getOne(id);
+
+        try {
+            User user = userRepository.findById(id).get();
+        } catch (RuntimeException e){
+            return null;
+        }
+
+        return userRepository.findById(id).get();
     }
 
-    public User update(User user, Long id){
-        User newUser = getUserById(id);
+    public User update(User user){
+        User newUser = getUserById(user.getId());
         newUser.setUserName(user.getUserName());
         newUser.setEmail(user.getEmail());
         newUser.setUserLastName(user.getUserLastName());
