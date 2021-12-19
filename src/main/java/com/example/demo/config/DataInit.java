@@ -2,8 +2,11 @@ package com.example.demo.config;
 
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,27 +15,22 @@ import java.util.HashSet;
 @Component
 public class DataInit {
 
-    private UserService userService;
-    Role rUser = new Role("ROLE_USER");
-    Role rAdmin = new Role("ROLE_ADMIN");
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public DataInit(UserService userService) {
-        this.userService = userService;
+    public DataInit(UserRepository userRepository,
+                       RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
-
-
 
 
 
     @PostConstruct
    private void rolemetod(){
-
-
-        userService.saveRole(rUser);
-        userService.saveRole(rAdmin);
-
-
+        Role rUser = new Role("ROLE_USER");
+        Role rAdmin = new Role("ROLE_ADMIN");
 
         User u1 = new User();
         u1.setAge((byte)1);
@@ -43,17 +41,17 @@ public class DataInit {
         u1.setPassword("xxx");
         u1.setRoleSet(new HashSet<>());
         u1.getRoles().add(rUser);
-        userService.saveUser(u1);
+        userRepository.save(u1);
 
         User u2 = new User();
         u2.setAge((byte)1);
         u2.setUserLastName("222");
         u2.setActive(true);
-        u2.setUserName("34324");
+        u2.setUserName("3432458");
         u2.setEmail("22");
         u2.setPassword("xxx");
         u2.setRoleSet(new HashSet<>());
         u2.getRoles().add(rAdmin);
-        userService.saveUser(u2);
+        userRepository.save(u2);
     }
 }
