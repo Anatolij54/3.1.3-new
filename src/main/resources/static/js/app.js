@@ -96,16 +96,19 @@ async function getTableWithUsers() {
 // что то деалем при открытии модалки и при закрытии
 // основываясь на ее дата атрибутах
 async function getDefaultModal() {
+
     $('#someDefaultModal').modal({
         keyboard: true,
         backdrop: "static",
         show: false
     }).on("show.bs.modal", (event) => {
+        console.log(event)
         let thisModal = $(event.target);
         let userid = thisModal.attr('data-userid');
         let action = thisModal.attr('data-action');
         switch (action) {
             case 'edit':
+
                 editUser(thisModal, userid);
                 break;
             case 'delete':
@@ -123,10 +126,10 @@ async function getDefaultModal() {
 
 // редактируем юзера из модалки редактирования, забираем данные, отправляем
 async function editUser(modal, id) {
-    console.log(id);
+
     let preuser = await userFetchService.findOneUser(id);
     let user = preuser.json();
-    console.log(user);
+
 
     modal.find('.modal-title').html('Edit user');
 
@@ -193,7 +196,7 @@ async function editUser(modal, id) {
                                                                    
                                                                         <label>Role</label>
                                                                         <select name="roles" id="roles"
-                                                                                class="form-select" size="2" multiple
+                                                                                class="form-control" size="2" multiple
                                                                                 aria-label="multiple select example">
                                                                             <option value="USER">USER</option>
                                                                             <option value="ADMIN">ADMIN</option>
@@ -213,18 +216,51 @@ async function editUser(modal, id) {
         let age = modal.find("#age").val().trim();
         let email = modal.find("#email").val().trim();
         let password = modal.find("#password").val().trim();
-        let roles = modal.find("#roles").val().trim();
+
+
+        let options = [];
+        let val = [];
+
+       val = modal.find("#roles").val();
+         let x = "x";
+         let y = "y";
+
+         if (val[0]!== undefined){
+         x = val[0];
+         console.log(1);
+         }
+         if (val[1]!== undefined) {
+             y = val[1];
+             console.log(2);
+         }
+
+        if (x === "USER"){
+            options.push({"id": 1,
+                "role": "USER"});
+        }
+        if (x === "ADMIN"){
+            options.push({"id": 2,
+                "role": "ADMIN"});
+        }
+        if (y === "ADMIN"){
+            options.push({"id": 2,
+                "role": "ADMIN"});
+        }
+
+        console.log(options);
+
         let data = {
             id: id,
-            username: userName,
+            userName: userName,
             userLastName: userLastName,
             age: age,
             email: email,
             password: password,
-            roles: roles
-        }
-        const response = await userFetchService.updateUser(data, id);
+            roles: options
 
+        }
+        console.log(data);
+        const response = await userFetchService.updateUser(data, id);
         if (response.ok) {
             getTableWithUsers();
             modal.modal('hide');

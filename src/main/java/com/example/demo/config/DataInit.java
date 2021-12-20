@@ -29,8 +29,8 @@ public class DataInit {
 
     @PostConstruct
    private void rolemetod(){
-        Role rUser = new Role("ROLE_USER");
-        Role rAdmin = new Role("ROLE_ADMIN");
+        Role rUser = new Role("USER");
+        Role rAdmin = new Role("ADMIN");
 
         User u1 = new User();
         u1.setAge((byte)1);
@@ -52,6 +52,9 @@ public class DataInit {
         u2.setPassword("xxx");
         u2.setRoleSet(new HashSet<>());
         u2.getRoles().add(rAdmin);
+        userRepository.save(u2);
+
+        u2.getRoles().add(rUser);
         userRepository.save(u2);
     }
 }
