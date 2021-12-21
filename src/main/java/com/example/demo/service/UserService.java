@@ -71,7 +71,7 @@ public class UserService {
         newUser.setPassword(user.getPassword());
         newUser.setAge(user.getAge());
         newUser.setActive(true);
-        newUser.setRoleSet(user.getRoles());
+        newUser.setRoles(user.getRoles());
         return userRepository.save(newUser);
     }
 

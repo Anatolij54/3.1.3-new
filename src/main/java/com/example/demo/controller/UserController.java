@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,10 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
+
+
+
+   // User x = new User();
 
     @GetMapping("/")
     public String getIndex(Model model2) {

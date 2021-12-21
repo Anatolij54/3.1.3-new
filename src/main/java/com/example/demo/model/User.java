@@ -46,22 +46,24 @@ public class User {
     private String password;
     @Column(name = "active")
     private Boolean active;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public void setRoleSet(Set<Role> roleSet){
-        roles = roleSet;
-    }
-
-    public void setRoles(String[] roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            Role roleNew = new Role();
-            roleNew.setRole(role);
-            roleSet.add(roleNew);
-        }
-        this.roles = roleSet;
-    }
+//    public void setRoleSet(Set<Role> roleSet){
+//        roles = roleSet;
+//    }
+//
+//    public void setRoles(String[] roles) {
+//        Set<Role> roleSet = new HashSet<>();
+//        for (String role : roles) {
+//            Role roleNew = new Role();
+//            roleNew.setRole(role);
+//            roleSet.add(roleNew);
+//        }
+//        this.roles = roleSet;
+//    }
 }

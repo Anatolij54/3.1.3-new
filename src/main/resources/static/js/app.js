@@ -20,6 +20,7 @@ const userFetchService = {
         headers: userFetchService.head,
         body: JSON.stringify(user)
     }),
+
     updateUser: async (user, id) => await fetch(`api/users/${id}`, {
         method: 'PUT',
         headers: userFetchService.head,
@@ -234,20 +235,18 @@ async function editUser(modal, id) {
              console.log(2);
          }
 
-        if (x === "USER"){
+        if (x == "USER"){
             options.push({"id": 1,
                 "role": "USER"});
-        }
-        if (x === "ADMIN"){
+        } else if (x == "ADMIN"){
             options.push({"id": 2,
                 "role": "ADMIN"});
         }
-        if (y === "ADMIN"){
+        if (y == "ADMIN"){
             options.push({"id": 2,
                 "role": "ADMIN"});
         }
 
-        console.log(options);
 
         let data = {
             id: id,

@@ -41,16 +41,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //указываем логику обработки при логине
                 .successHandler(new SuccessUserHandler())
                 // указываем action с формы логина
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/login");
                 // Указываем параметры логина и пароля с формы логина
                 //.usernameParameter("j_username")
                 //.passwordParameter("j_password")
                 // даем доступ к форме логина всем
-                .permitAll();
+                //.permitAll();
 
         http.logout()
                 // разрешаем делать логаут всем
-                .permitAll()
+                //.permitAll()
                 // указываем URL логаута
                 .logoutUrl("/logout")
                 // указываем URL при удачном логауте
@@ -63,7 +63,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
-                .antMatchers("/api/**").anonymous()
+                .antMatchers("/api/**").permitAll()
+
 
 
 
