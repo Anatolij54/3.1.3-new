@@ -58,7 +58,6 @@ public class RestUserController {
     public ResponseEntity<DataInfoHandler> apiUpdateUser(@PathVariable("id") long id,
                                                          @RequestBody @Valid User user,
                                                          BindingResult bindingResult) {
-        System.out.println("55555555555555555555555555555");
         if (bindingResult.hasErrors()) {
             String error = getErrorsFromBindingResult(bindingResult);
             return new ResponseEntity<>(new DataInfoHandler(error), HttpStatus.BAD_REQUEST);

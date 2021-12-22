@@ -1,8 +1,7 @@
 $(async function () {
     await getTableWithUsers();
-    //await getNewUserForm();
     await getDefaultModal();
-   // await addNewUser();
+    await addNewUser();
 })
 
 
@@ -75,23 +74,6 @@ async function getTableWithUsers() {
         defaultModal.modal('show');
     })
 }
-
-
-// async function getNewUserForm() {
-//     let button = $(`#SliderNewUserForm`);
-//     let form = $(`#defaultSomeForm`)
-//     button.on('click', () => {
-//         if (form.attr("data-hidden") === "true") {
-//             form.attr('data-hidden', 'false');
-//             form.show();
-//             button.text('Hide panel');
-//         } else {
-//             form.attr('data-hidden', 'true');
-//             form.hide();
-//             button.text('Show panel');
-//         }
-//     })
-// }
 
 
 // что то деалем при открытии модалки и при закрытии
@@ -222,29 +204,35 @@ async function editUser(modal, id) {
         let options = [];
         let val = [];
 
-       val = modal.find("#roles").val();
-         let x = "x";
-         let y = "y";
+        val = modal.find("#roles").val();
+        let x = "x";
+        let y = "y";
 
-         if (val[0]!== undefined){
-         x = val[0];
-         console.log(1);
-         }
-         if (val[1]!== undefined) {
-             y = val[1];
-             console.log(2);
-         }
-
-        if (x == "USER"){
-            options.push({"id": 1,
-                "role": "USER"});
-        } else if (x == "ADMIN"){
-            options.push({"id": 2,
-                "role": "ADMIN"});
+        if (val[0] !== undefined) {
+            x = val[0];
+            console.log(1);
         }
-        if (y == "ADMIN"){
-            options.push({"id": 2,
-                "role": "ADMIN"});
+        if (val[1] !== undefined) {
+            y = val[1];
+            console.log(2);
+        }
+
+        if (x == "USER") {
+            options.push({
+                "id": 1,
+                "role": "USER"
+            });
+        } else if (x == "ADMIN") {
+            options.push({
+                "id": 2,
+                "role": "ADMIN"
+            });
+        }
+        if (y == "ADMIN") {
+            options.push({
+                "id": 2,
+                "role": "ADMIN"
+            });
         }
 
 
@@ -279,41 +267,174 @@ async function editUser(modal, id) {
 
 // удаляем юзера из модалки удаления
 async function deleteUser(modal, id) {
-    await userFetchService.deleteUser(id);
-    getTableWithUsers();
-    modal.find('.modal-title').html('');
-    modal.find('.modal-body').html('User was deleted');
-    let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`
+
+    let preuser = await userFetchService.findOneUser(id);
+    let user = preuser.json();
+
+
+    modal.find('.modal-title').html('Delete user');
+
+    let deleteButton = `<button  class="btn btn-outline-success" id="deleteButton">Delete</button>`;
+    let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>;`
+    modal.find('.modal-footer').append(deleteButton);
     modal.find('.modal-footer').append(closeButton);
+
+    user.then(user => {
+        let bodyForm = `
+            <form class="form-group" id="editUser">
+            
+       
+                                                               
+                                                                        <label for="id">ID</label>
+                                                                        <input type="text"
+                                                                               value="${user.id}"
+                                                                               class="form-control"
+                                                                               id="id"
+                                                                               name ="id"
+                                                                               disabled
+                                                                               >
+                                                                   
+                                                                  
+                                                                        <label for="userName">First
+                                                                            name</label>
+                                                                        <input type="text"
+                                                                               value="${user.userName}"
+                                                                               name="userName"
+                                                                               class="form-control"
+                                                                               id="userName"
+                                                                               disabled>
+                                                             
+                                                             
+                                                                        <label for="userLastName">Last
+                                                                            name</label>
+                                                                        <input type="text"
+                                                                               value="${user.userLastName}"
+                                                                               name="userLastName"
+                                                                               class="form-control"
+                                                                               id="userLastName"
+                                                                               disabled>
+                                                                 
+                                                                        <label for="age">Age</label>
+                                                                        <input type="number"
+                                                                               value="${user.age}"
+                                                                               name="age"
+                                                                               class="form-control"
+                                                                               min="1" value="1"
+                                                                               id="age"
+                                                                               disabled>
+                                                                   
+                                                                        <label for="email">Email</label>
+                                                                        <input type="text"
+                                                                               value="${user.email}"
+                                                                               class="form-control"
+                                                                               name="email"
+                                                                               id="email"
+                                                                               disabled>
+                                                                   
+                                                                        <label for="password">Password</label>
+                                                                        <input type="text"
+                                                                               value="${user.password}"
+                                                                               class="form-control"
+                                                                         
+                                                                               name="password"
+                                                                               id="password"
+                                                                               disabled>
+                                                                   
+                                                                        <label>Role</label>
+                                                                        <select name="roles" id="roles" disabled
+                                                                                class="form-control" size="2" multiple
+                                                                                aria-label="multiple select example">
+                                                                            <option value="USER">USER</option>
+                                                                            <option value="ADMIN">ADMIN</option>
+                                                                        </select>
+                                                                  
+                
+                
+            </form>
+        `;
+        modal.find('.modal-body').append(bodyForm);
+    })
+    $("#deleteButton").on('click', async () => {
+
+        await userFetchService.deleteUser(id);
+        getTableWithUsers();
+        modal.modal('hide');
+    })
+
 }
 
 
-// async function addNewUser() {
-//     $('#addNewUserButton').click(async () => {
-//         let addUserForm = $('#defaultSomeForm')
-//         let login = addUserForm.find('#AddNewUserLogin').val().trim();
-//         let password = addUserForm.find('#AddNewUserPassword').val().trim();
-//         let age = addUserForm.find('#AddNewUserAge').val().trim();
-//         let data = {
-//             login: login,
-//             password: password,
-//             age: age
-//         }
-//         const response = await userFetchService.addNewUser(data);
-//         if (response.ok) {
-//             getTableWithUsers();
-//             addUserForm.find('#AddNewUserLogin').val('');
-//             addUserForm.find('#AddNewUserPassword').val('');
-//             addUserForm.find('#AddNewUserAge').val('');
-//         } else {
-//             let body = await response.json();
-//             let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
-//                             ${body.info}
-//                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-//                                 <span aria-hidden="true">&times;</span>
-//                             </button>
-//                         </div>`;
-//             addUserForm.prepend(alert)
-//         }
-//     })
-// }
+async function addNewUser() {
+    $('#addNewUserButton').click(async () => {
+
+        let addUserForm = $('#defaultSomeForm')
+        let addUserName = addUserForm.find("#addUserName").val().trim();
+        let addUserLastName = addUserForm.find("#addUserLastName").val().trim();
+        let addAge = addUserForm.find("#addAge").val().trim();
+        let addEmail = addUserForm.find("#addEmail").val().trim();
+        let addPassword = addUserForm.find("#addPassword").val().trim();
+
+
+        let addOptions = [];
+        let addVal = [];
+
+        addVal = addUserForm.find("#addRoles").val();
+        let addx = "x";
+        let addy = "y";
+
+        if (addVal[0] !== undefined) {
+            addx = addVal[0];
+        }
+        if (addVal[1] !== undefined) {
+            addy = addVal[1];
+        }
+
+        if (addx == "USER") {
+            addOptions.push({
+                "role": "USER"
+            });
+        } else if (addx == "ADMIN") {
+            addOptions.push({
+                "role": "ADMIN"
+            });
+        }
+        if (addy == "ADMIN") {
+            addOptions.push({
+                "role": "ADMIN"
+            });
+        }
+
+
+        let data = {
+            userName: addUserName,
+            userLastName: addUserLastName,
+            age: addAge,
+            email: addEmail,
+            password: addPassword,
+            roles: addOptions
+
+        }
+        console.log(data);
+
+
+        const response = await userFetchService.addNewUser(data);
+        if (response.ok) {
+            $('#nav-tab a[href="#nav-home"]').tab('show');
+            getTableWithUsers();
+            addUserForm.find("#addUserName").val('');
+            addUserForm.find("#addUserLastName").val('');
+            addUserForm.find("#addAge").val('');
+            addUserForm.find("#addEmail").val('');
+            addUserForm.find("#addPassword").val('');
+        } else {
+            let body = await response.json();
+            let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
+                            ${body.info}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+            addUserForm.prepend(alert)
+        }
+    })
+}

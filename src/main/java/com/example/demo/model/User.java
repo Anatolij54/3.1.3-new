@@ -53,17 +53,5 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-//    public void setRoleSet(Set<Role> roleSet){
-//        roles = roleSet;
-//    }
-//
-//    public void setRoles(String[] roles) {
-//        Set<Role> roleSet = new HashSet<>();
-//        for (String role : roles) {
-//            Role roleNew = new Role();
-//            roleNew.setRole(role);
-//            roleSet.add(roleNew);
-//        }
-//        this.roles = roleSet;
-//    }
+
 }

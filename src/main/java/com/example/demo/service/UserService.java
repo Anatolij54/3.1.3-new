@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +45,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Role saveRole(Role role){
+    public Role saveRole(Role role) {
         return roleRepository.save(role);
     }
 
@@ -52,18 +53,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long id){
+    public User getUserById(Long id) {
 
         try {
             User user = userRepository.findById(id).get();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return null;
         }
 
         return userRepository.findById(id).get();
     }
 
-    public User update(User user){
+    public User update(User user) {
         User newUser = getUserById(user.getId());
         newUser.setUserName(user.getUserName());
         newUser.setEmail(user.getEmail());
@@ -75,8 +76,8 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
-}
+    }
 
 }

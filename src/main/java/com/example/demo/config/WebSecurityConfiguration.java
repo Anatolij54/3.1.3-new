@@ -69,10 +69,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
                 // защищенные URL
-//                .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
-//                .antMatchers("/test/**").access("hasAuthority('ADMIN')")
-//                .antMatchers("/api/**").access("hasAuthority('ADMIN')")
+//                .antMatchers("/**").access("hasAuthority('ADMIN')")
+////                .antMatchers("/test/**").access("hasAuthority('ADMIN')")
+////                .antMatchers("/api/**").access("hasAuthority('ADMIN')")
 //                .antMatchers("/user/**").access("hasAuthority('USER')")
+//                .antMatchers("/user/**").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated();
     }
 

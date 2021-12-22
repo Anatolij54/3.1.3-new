@@ -26,9 +26,6 @@ public class UserController {
     }
 
 
-
-   // User x = new User();
-
     @GetMapping("/")
     public String getIndex(Model model2) {
         model2.addAttribute("userAuth", userService.findUserByUserName(getCurrentUsername()));
