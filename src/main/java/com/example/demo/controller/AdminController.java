@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping
-public class UserController {
+public class AdminController {
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 
@@ -26,10 +26,17 @@ public class UserController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String getIndex(Model model2) {
         model2.addAttribute("userAuth", userService.findUserByUserName(getCurrentUsername()));
         return "pages/index";
     }
+
+    @GetMapping("/user")
+    public String getUser(Model model2) {
+        model2.addAttribute("userAuth", userService.findUserByUserName(getCurrentUsername()));
+        return "pages/user";
+    }
+
 
 }

@@ -27,7 +27,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private MyUserDetailsService userDetailsService;
 
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -37,16 +36,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 // указываем страницу с формой логина
-               .loginPage("/login")
+                .loginPage("/login")
                 //указываем логику обработки при логине
                 .successHandler(new SuccessUserHandler())
                 // указываем action с формы логина
                 .loginProcessingUrl("/login");
-                // Указываем параметры логина и пароля с формы логина
-                //.usernameParameter("j_username")
-                //.passwordParameter("j_password")
-                // даем доступ к форме логина всем
-                //.permitAll();
+        // Указываем параметры логина и пароля с формы логина
+        //.usernameParameter("j_username")
+        //.passwordParameter("j_password")
+        // даем доступ к форме логина всем
+        //.permitAll();
 
         http.logout()
                 // разрешаем делать логаут всем
@@ -63,17 +62,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
-                .antMatchers("/api/**").permitAll()
-
-
 
 
                 // защищенные URL
-//                .antMatchers("/**").access("hasAuthority('ADMIN')")
-////                .antMatchers("/test/**").access("hasAuthority('ADMIN')")
-////                .antMatchers("/api/**").access("hasAuthority('ADMIN')")
-//                .antMatchers("/user/**").access("hasAuthority('USER')")
-//                .antMatchers("/user/**").access("hasAuthority('ADMIN')")
+//                .antMatchers("/test/**").access("hasAuthority('ADMIN')")
+//                .antMatchers("/api/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/user/**").access("hasAuthority('USER')")
+                .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated();
     }
 
